@@ -1,0 +1,241 @@
+# baseURI: http://sjm.org/publishing
+# prefix: pub
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pub: <http://sjm.org/publishing#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://sjm.org/publishing>
+  a owl:Ontology ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+pub:Addison
+  a pub:Publisher ;
+  pub:city "Reading" ;
+  pub:organisation_name "Addison-Wesley" ;
+  pub:published pub:CPlus ;
+  pub:published pub:DDD ;
+  pub:published pub:Design_Patterns ;
+  rdfs:label "Addison" ;
+.
+pub:Art_of_R
+  a pub:Book ;
+  pub:publication_date "2011-01-01"^^xsd:date ;
+  pub:published_by pub:No_Starch ;
+  pub:subject "Programming" ;
+  pub:title "The Art of R Programming" ;
+  pub:written_by pub:Matloff ;
+  rdfs:label "Art of R" ;
+.
+pub:Author
+  a owl:Class ;
+  rdfs:subClassOf pub:Person ;
+.
+pub:Book
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing ;
+.
+pub:CPlus
+  a pub:Book ;
+  pub:publication_date "1997-01-01"^^xsd:date ;
+  pub:published_by pub:Addison ;
+  pub:subject "Programming" ;
+  pub:title "The C++ Proramming Language" ;
+  pub:written_by pub:Stroustrup ;
+  rdfs:label "CPlus" ;
+.
+pub:C_Prog
+  a pub:Book ;
+  pub:publication_date "1988-01-01"^^xsd:date ;
+  pub:published_by pub:Prentice ;
+  pub:subject "Programming" ;
+  pub:title "The C Programming Language" ;
+  pub:written_by pub:Kernigham ;
+  pub:written_by pub:Ritchie ;
+  rdfs:label "C Prog" ;
+.
+pub:DDD
+  a pub:Book ;
+  pub:publication_date "2004-01-01"^^xsd:date ;
+  pub:published_by pub:Addison ;
+  pub:subject "Design" ;
+  pub:title "Domain Driven Design" ;
+  pub:written_by pub:Evans ;
+  rdfs:label "DDD" ;
+.
+pub:Design_Patterns
+  a pub:Book ;
+  pub:publication_date "1977-01-01"^^xsd:date ;
+  pub:published_by pub:Addison ;
+  pub:subject "Design" ;
+  pub:title "Design Patterns" ;
+  pub:written_by pub:Gamma ;
+  rdfs:label "Design Patterns" ;
+.
+pub:Evans
+  a pub:Author ;
+  pub:author_of pub:DDD ;
+  pub:person_name "Eric Evans" ;
+  pub:publishes_with pub:Addison ;
+  rdfs:label "Evans" ;
+.
+pub:Gamma
+  a pub:Author ;
+  pub:author_of pub:Design_Patterns ;
+  pub:person_name "Erich Gamma" ;
+  pub:publishes_with pub:Addison ;
+  rdfs:label "Gamma" ;
+.
+pub:Kernigham
+  a pub:Author ;
+  pub:author_of pub:C_Prog ;
+  pub:person_name "Brian Kernighan" ;
+  pub:publishes_with pub:Prentice ;
+  rdfs:label "Kernigham" ;
+.
+pub:Matloff
+  a pub:Author ;
+  pub:author_of pub:Art_of_R ;
+  pub:person_name "Norman Matloff" ;
+  pub:publishes_with pub:No_Starch ;
+  rdfs:label "Matloff" ;
+.
+pub:No_Starch
+  a pub:Publisher ;
+  pub:city "SanFrancisco" ;
+  pub:organisation_name "No Starch Press" ;
+  pub:published pub:Art_of_R ;
+  rdfs:label "No Starch" ;
+.
+pub:OReilly
+  a pub:Publisher ;
+  pub:city "Cambridge" ;
+  pub:organisation_name "OReilly" ;
+  pub:published pub:R_Cookbook ;
+  pub:published pub:Unix_Nutshell ;
+  rdfs:label "OReilly" ;
+.
+pub:Organisation
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing ;
+.
+pub:Person
+  a owl:Class ;
+  rdfs:subClassOf owl:Thing ;
+.
+pub:Prentice
+  a pub:Publisher ;
+  pub:city "Englewood Cliffs" ;
+  pub:organisation_name "Prentice Hall" ;
+  pub:published pub:C_Prog ;
+  rdfs:label "Prentice" ;
+.
+pub:Publisher
+  a owl:Class ;
+  rdfs:subClassOf pub:Organisation ;
+.
+pub:R_Cookbook
+  a pub:Book ;
+  pub:publication_date "2011-03-01"^^xsd:date ;
+  pub:published_by pub:OReilly ;
+  pub:subject "Programming" ;
+  pub:title "R Cookbook" ;
+  pub:written_by pub:Teetor ;
+  rdfs:label "R Cookbook" ;
+.
+pub:Ritchie
+  a pub:Author ;
+  pub:author_of pub:C_Prog ;
+  pub:person_name "Dennis Ritchie" ;
+  pub:publishes_with pub:Prentice ;
+  rdfs:label "Ritchie" ;
+.
+pub:Robbins
+  a pub:Author ;
+  pub:author_of pub:Unix_Nutshell ;
+  pub:person_name "Arnold Robbins" ;
+  pub:publishes_with pub:OReilly ;
+  rdfs:label "Robbins" ;
+.
+pub:Stroustrup
+  a pub:Author ;
+  pub:author_of pub:CPlus ;
+  pub:person_name "Bjarne Stroustrup" ;
+  pub:publishes_with pub:Addison ;
+  rdfs:label "Stroustrup" ;
+.
+pub:Teetor
+  a pub:Author ;
+  pub:author_of pub:R_Cookbook ;
+  pub:publishes_with pub:OReilly ;
+.
+pub:Unix_Nutshell
+  a pub:Book ;
+  pub:publication_date "1999-01-01"^^xsd:date ;
+  pub:published_by pub:OReilly ;
+  pub:subject "Unix" ;
+  pub:title "Unix in a Nutshell" ;
+  pub:written_by pub:Robbins ;
+  rdfs:label "Unix Nutshell" ;
+.
+pub:author_of
+  a owl:ObjectProperty ;
+  rdfs:domain pub:Author ;
+  rdfs:range pub:Book ;
+  owl:inverseOf pub:written_by ;
+.
+pub:city
+  a owl:DatatypeProperty ;
+  rdfs:domain pub:Organisation ;
+  rdfs:range xsd:string ;
+.
+pub:organisation_name
+  a owl:DatatypeProperty ;
+  rdfs:domain pub:Organisation ;
+  rdfs:range xsd:string ;
+.
+pub:person_name
+  a owl:DatatypeProperty ;
+  rdfs:domain pub:Person ;
+  rdfs:range xsd:string ;
+.
+pub:publication_date
+  a owl:DatatypeProperty ;
+  rdfs:domain pub:Book ;
+  rdfs:range xsd:date ;
+.
+pub:published
+  a owl:ObjectProperty ;
+  rdfs:domain pub:Publisher ;
+  rdfs:range pub:Book ;
+  owl:inverseOf pub:published_by ;
+.
+pub:published_by
+  a owl:ObjectProperty ;
+  rdfs:domain pub:Book ;
+  rdfs:range pub:Publisher ;
+  owl:inverseOf pub:published ;
+.
+pub:publishes_with
+  a rdf:Property ;
+  rdfs:domain pub:Author ;
+  rdfs:range pub:Publisher ;
+.
+pub:subject
+  a owl:DatatypeProperty ;
+  rdfs:domain pub:Book ;
+  rdfs:range xsd:string ;
+.
+pub:title
+  a owl:DatatypeProperty ;
+  rdfs:domain pub:Book ;
+  rdfs:range xsd:string ;
+.
+pub:written_by
+  a owl:ObjectProperty ;
+  rdfs:domain pub:Book ;
+  rdfs:range pub:Author ;
+  owl:inverseOf pub:author_of ;
+.
