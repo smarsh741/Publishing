@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gaz="http://fnc.com/gaz/0_1/gazetteer#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xml:base="http://fnc.com/gaz/0_1/gazetteer">
+  <owl:Ontology rdf:about="">
+    <owl:imports rdf:resource="http://www.w3.org/2006/time"/>
+    <owl:versionInfo>Created with TopBraid Composer</owl:versionInfo>
+    <owl:imports rdf:resource="http://www.opengis.net/ont/geosparql"/>
+    <owl:imports rdf:resource="http://www.w3.org/ns/prov"/>
+  </owl:Ontology>
+  <owl:Class rdf:ID="PlaceDescriptor">
+    <skos:scopeNote>A means of describing a place. Sub-classes include gaz:FeatureType, which describes the fom of a place (using a skos:ConceptScheme) and gaz:PlaceName.</skos:scopeNote>
+    <rdfs:label>Place descriptor</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Community">
+    <rdfs:label>Community</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Organization"/>
+    <skos:scopeNote>A cultural or geographical community. Included for the purpose of indicating a PlaceName with a particular community. Currently represented by named types of this class. Later versions of the model might refine this representation.</skos:scopeNote>
+  </owl:Class>
+  <owl:Class rdf:ID="PlaceName">
+    <skos:scopeNote>The name of a Place. PlaceName inherits properties indicating provenance from prov:Entity. Its usage is indicated by an associated instance of the Usage class; e.g. Defualt, alternative, etc. The period during which the name was or is in use is boundeed by the gaz:usedAfter and gaz:usedBefore DataTypeProperty values. (These are distinct from the Prov:generatedAtTime and prov:invalidatedAtTime properties, which indicate time of  creation and of retirement of the record.) Names in different languages may be catered for by means of the gaz:hasUsage ObjectProperty (with the gaz:_alternative Concept and the gaz:language DataTypeProperty. </skos:scopeNote>
+    <rdfs:subClassOf rdf:resource="#PlaceDescriptor"/>
+    <rdfs:label>Place name</rdfs:label>
+  </owl:Class>
+  <owl:Class rdf:ID="What3Words">
+    <rdfs:label>what3words</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#PlaceDescriptor"/>
+    <skos:scopeNote>A string representation of the three words used by the what3words app. as a unique identifier for a 3 metre by 3 metre cell on the Earth's surface. See https://what3words.com/products/what3words-app/ for further details.</skos:scopeNote>
+  </owl:Class>
+  <owl:Class rdf:ID="Place">
+    <rdfs:label>Place</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://www.opengis.net/ont/geosparql#Feature"/>
+    <skos:scopeNote>Place is a description of a space that emerges as a result of human activity and/or interest. It is complementary to a geometric representation of the same space (here provided by gaz:Location).</skos:scopeNote>
+  </owl:Class>
+  <owl:Class rdf:ID="Address">
+    <rdfs:label>Address</rdfs:label>
+    <rdfs:subClassOf rdf:resource="#PlaceDescriptor"/>
+    <skos:scopeNote>The postal or street address of a Location. The properties of Address are based on the UK Ordnance Survey Addressbase model.</skos:scopeNote>
+  </owl:Class>
+  <owl:Class rdf:ID="FeatureType">
+    <skos:scopeNote>Describes the nature of a Place in terms of a limited set of types, based on those found within the MoD Gazetteer and the Ordnance Survey Feature Type.&#xD;
+&#xD;
+FeatureTypes are skos:Concepts and an anonymous owl:equivalentClass is used to restrict valid instnaces to those from the gaz:_featureTypeScheme.</skos:scopeNote>
+    <rdfs:subClassOf rdf:resource="#PlaceDescriptor"/>
+    <owl:equivalentClass>
+      <owl:Restriction>
+        <owl:hasValue>
+          <skos:ConceptScheme rdf:ID="_featureTypeScheme">
+            <rdfs:label>feature type scheme</rdfs:label>
+          </skos:ConceptScheme>
+        </owl:hasValue>
+        <owl:onProperty rdf:resource="http://www.w3.org/2004/02/skos/core#inScheme"/>
+      </owl:Restriction>
+    </owl:equivalentClass>
+    <rdfs:label>Feature type</rdfs:label>
+  </owl:Class>
+  <owl:ObjectProperty rdf:ID="associatedWithCommunity">
+    <rdfs:range rdf:resource="#Community"/>
+    <rdfs:domain rdf:resource="#PlaceName"/>
+    <rdfs:label>associated with community</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasUsage">
+    <rdfs:range>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#Concept"/>
+          <owl:Restriction>
+            <owl:hasValue>
+              <skos:ConceptScheme rdf:ID="_usageScheme">
+                <rdfs:label> usage scheme</rdfs:label>
+              </skos:ConceptScheme>
+            </owl:hasValue>
+            <owl:onProperty rdf:resource="http://www.w3.org/2004/02/skos/core#inScheme"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </rdfs:range>
+    <skos:scopeNote>Reflects the usage - e.g. preferred, non-preferred, alternative... - of a gaz:PlaceName. Usage entities are skos:Concepts and a restriction on the Range specidies that they must be members of the gaz:_usageScheme. </skos:scopeNote>
+    <rdfs:domain rdf:resource="#PlaceName"/>
+    <rdfs:label>has usage</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasPlaceDescriptor">
+    <rdfs:range rdf:resource="#PlaceDescriptor"/>
+    <rdfs:domain rdf:resource="#Place"/>
+    <rdfs:label>has place descriptor</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasWhat3Words">
+    <rdfs:label>has what3Words</rdfs:label>
+    <rdfs:range rdf:resource="#What3Words"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasTemporalExtent">
+    <rdfs:range rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+    <rdfs:domain rdf:resource="#PlaceDescriptor"/>
+    <rdfs:label>has temporal extent</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasAddress">
+    <rdfs:label>has address</rdfs:label>
+    <rdfs:range rdf:resource="#Address"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="hasStatus">
+    <rdfs:range>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://www.w3.org/2004/02/skos/core#Concept"/>
+          <owl:Restriction>
+            <owl:hasValue>
+              <skos:ConceptScheme rdf:ID="_statusScheme">
+                <rdfs:label> status scheme</rdfs:label>
+              </skos:ConceptScheme>
+            </owl:hasValue>
+            <owl:onProperty rdf:resource="http://www.w3.org/2004/02/skos/core#inScheme"/>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </rdfs:range>
+    <skos:scopeNote>Reflects the status - e.g. candidate, approved, queried, queried - of a gaz:PlaceDescriptor. Status are skos:Concepts and a restriction on the Range specidies that they muct be members of the gaz:_statusScheme. </skos:scopeNote>
+    <rdfs:domain rdf:resource="#PlaceDescriptor"/>
+    <rdfs:label>has status</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:ID="threeWords">
+    <rdfs:domain rdf:resource="#What3Words"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>three words</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="thouroughfare">
+    <skos:scopeNote>In certain places (for example, town centres), there are named thoroughfares within other named thoroughfares (for example, parades of shops on a high street where different parades have their own identity), for example, KINGS PARADE, HIGH STREET and QUEENS PARADE, HIGH STREET.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>thouroughfare</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="doubleDependentLocality">
+    <skos:scopeNote>This is used to distinguish between similar thoroughfares or the same thoroughfare within a dependent locality. For example, Millbrook Industrial Estate and Cranford Estate in this situation: BRUNEL WAY, MILLBROOK INDUSTRIAL ESTATE, MILLBROOK, SOUTHAMPTON and BRUNEL WAY, CRANFORD ESTATE, MILLBROOK, SOUTHAMPTON.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>double dependent locality</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="subBuildingName">
+    <rdfs:label>sub building name</rdfs:label>
+    <skos:scopeNote>The sub-building name and/or number are identifiers for subdivisions of properties. For example: Sub-building Name: FLAT 3 Building Name: POPLAR COURT Thoroughfare: LONDON ROAD NOTE: If the above address is styled 3 POPLAR COURT, all the text will be shown in the Building Name attribute and the Sub-building Name will be empty. The building number will be shown in this field when it contains a range, decimal or non-numeric character (see gaz:buildingNumber)&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="postcode">
+    <skos:scopeNote>A postcode is an abbreviated form of address made up of combinations of between five and seven alphanumeric characters. These are used by Royal Mail to help with the automated sorting of mail. A postcode may cover between 1 and 100 addresses. There are two main components of a postcode, for example, NW6 4DP: • The outward code (or ‘outcode’). The first two–four characters of the postcode constituting the postcode area and the postcode district, for example, NW6. It is the part of the postcode that enables mail to be sent from the accepting office to the correct area for delivery. • The inward code (or ‘incode’). The last three characters of the postcode constituting the postcode sector and the postcode unit, example, 4DP. It is used to sort mail at the local delivery office.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>postcode</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="dependentThoroughfare">
+    <skos:scopeNote>In certain places (for example, town centres), there are named thoroughfares within other named thoroughfares (for example, parades of shops on a high street where different parades have their own identity), for example, KINGS PARADE, HIGH STREET and QUEENS PARADE, HIGH STREET.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>dependent thoroughfare</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="language">
+    <rdfs:label>language</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#PlaceName"/>
+    <skos:scopeNote>The language in which a PlaceName is expressed. (Currently an xsd:string with no further restriction. To aid searching, it would be desirable to restrict to e.g., ISO codes.)</skos:scopeNote>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="departmentName">
+    <skos:scopeNote>For some organisations, department name is indicated because mail is received by subdivisions of the main organisation at distinct delivery points. For example: Organisation Name: ABC COMMUNICATIONS RM Department Name: MARKETING DEPARTMENT&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>department name</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="dependentLocality">
+    <skos:scopeNote>Dependent locality areas define an area within a post town. These are only necessary for postal purposes and are used to aid differentiation where there are thoroughfares of the same name in the same locality. For example, HIGH STREET in SHIRLEY and SWAYTHLING in this situation: HIGH STREET, SHIRLEY, SOUTHAMPTON and HIGH STREET, SWAYTHLING, SOUTHAMPTON.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>dependent locality</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="nameText">
+    <rdfs:label>name text</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#PlaceName"/>
+    <skos:scopeNote>The text (xsd:string) representation of a PlaceName. (Note, gaz:PlaceName also has a gaz:language property, indicating the language in which the place name is used.) </skos:scopeNote>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="buildingName">
+    <skos:scopeNote>The building name is a description applied to a single building or a small group of buildings, such as Highfield House. This also includes those building numbers that contain non-numeric characters, such as 44A. Some descriptive names, when included with the rest of the address, are sufficient to identify the property uniquely and unambiguously, for example, MAGISTRATES COURT. Sometimes the building name will be a blend of distinctive and descriptive naming, for example, RAILWAY TAVERN (PUBLIC HOUSE) or THE COURT ROYAL (HOTEL)&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>building name</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="postTown">
+    <skos:scopeNote>The town or city in which the Royal Mail sorting office is located which services this record. There may be more than one, possibly several, sorting offices in a town or city.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>post town</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="poBoxNumber">
+    <skos:scopeNote>Organisation Name or PO Box Number must be present if Building Name or Building Number are all not present.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>po box number</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="organisationName">
+    <skos:scopeNote>The organisation name is the business name given to a delivery point within a building or small group of buildings. For example: TOURIST INFORMATION CENTRE. This field could also include entries for churches, public houses and libraries.&#xD;
+Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>organisation name</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="usageAdvice">
+    <rdfs:label>usage advice</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#PlaceName"/>
+    <skos:scopeNote>Text (xsd:string) to note appropriate usage of a place name. For example, that it might be culturally contentious and  should not be used within a particular geographic reigon.</skos:scopeNote>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="buildingNumber">
+    <skos:scopeNote>Source: ADDRESSBASE – Technical Specification March 2021</skos:scopeNote>
+    <rdfs:domain rdf:resource="#Address"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:label>building number</rdfs:label>
+  </owl:DatatypeProperty>
+  <skos:Concept rdf:ID="_approved">
+    <skos:inScheme rdf:resource="#_statusScheme"/>
+    <rdfs:label> approved</rdfs:label>
+  </skos:Concept>
+  <skos:Concept rdf:ID="_default">
+    <skos:inScheme rdf:resource="#_usageScheme"/>
+    <rdfs:label> default</rdfs:label>
+  </skos:Concept>
+  <skos:Concept rdf:ID="_alternative">
+    <skos:inScheme rdf:resource="#_usageScheme"/>
+    <rdfs:label> alternative</rdfs:label>
+  </skos:Concept>
+  <skos:Concept rdf:ID="_invalidated">
+    <skos:inScheme rdf:resource="#_statusScheme"/>
+    <rdfs:label> invalidated</rdfs:label>
+  </skos:Concept>
+  <skos:Concept rdf:ID="_nonPreferred">
+    <skos:inScheme rdf:resource="#_usageScheme"/>
+    <rdfs:label> non preferred</rdfs:label>
+  </skos:Concept>
+  <rdf:Description rdf:ID="validBefore">
+    <rdfs:label>used before</rdfs:label>
+  </rdf:Description>
+  <skos:Concept rdf:ID="_candidate">
+    <skos:inScheme rdf:resource="#_statusScheme"/>
+    <rdfs:label> candidate</rdfs:label>
+  </skos:Concept>
+  <skos:Concept rdf:ID="_queried">
+    <skos:inScheme rdf:resource="#_statusScheme"/>
+    <rdfs:label> queried</rdfs:label>
+  </skos:Concept>
+  <skos:Concept rdf:ID="_habitation">
+    <skos:inScheme rdf:resource="#_featureTypeScheme"/>
+    <skos:narrower>
+      <skos:Concept rdf:ID="_village">
+        <rdfs:label> village</rdfs:label>
+        <skos:inScheme rdf:resource="#_featureTypeScheme"/>
+        <skos:broader rdf:resource="#_habitation"/>
+      </skos:Concept>
+    </skos:narrower>
+    <skos:narrower>
+      <skos:Concept rdf:ID="_city">
+        <skos:inScheme rdf:resource="#_featureTypeScheme"/>
+        <skos:broader rdf:resource="#_habitation"/>
+        <rdfs:label> city</rdfs:label>
+      </skos:Concept>
+    </skos:narrower>
+    <skos:narrower>
+      <skos:Concept rdf:ID="_town">
+        <skos:inScheme rdf:resource="#_featureTypeScheme"/>
+        <skos:broader rdf:resource="#_habitation"/>
+        <rdfs:label> town</rdfs:label>
+      </skos:Concept>
+    </skos:narrower>
+    <rdfs:label>_habitation</rdfs:label>
+    <skos:topConceptOf rdf:resource="#_featureTypeScheme"/>
+  </skos:Concept>
+</rdf:RDF>
+
+<!-- Created with TopBraid -->
